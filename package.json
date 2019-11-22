@@ -1,0 +1,26 @@
+{
+  "name": "greeny",
+  "version": "1.0.0",
+  "description": "- Green was born :green_heart:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/showmethatcode/greeny.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/showmethatcode/greeny/issues"
+  },
+  "homepage": "https://github.com/showmethatcode/greeny#readme",
+  "dependencies": {
+    "@slack/webhook": "^5.0.2",
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "dotenv": "^8.2.0"
+  }
+}
