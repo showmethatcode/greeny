@@ -7,7 +7,7 @@ Date.prototype.yyyymmdd = function()
     var yyyy = this.getFullYear().toString();
     var mm = (this.getMonth() + 1).toString();
     var dd = this.getDate().toString();
- 
+
     return yyyy + '-' + (mm[1] ? mm : '0'+mm[0]) + '-' + (dd[1] ? dd : '0'+dd[0]);
 }
 
@@ -16,7 +16,10 @@ var today = new Date().yyyymmdd()
 const getTodayCommit = async() => {
     const target_url = "https://github.com/clinoz"
     const response = await axios.get(target_url,{
-        responseType:"arraybuffer"
+        responseType:"arraybuffer",
+        headers:{
+            Cookie: "tz=Asia%2FSeoul"
+        }
     })
     if (response.status==200){
         const $ = cheerio.load(response.data)
@@ -30,10 +33,7 @@ const getTodayCommit = async() => {
                 continue;
             }
         }
-        
+
     }
 }
 getTodayCommit()
-
-
-
