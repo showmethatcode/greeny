@@ -14,7 +14,7 @@ Date.prototype.yyyymmdd = function()
 var today = new Date().yyyymmdd()
 
 const getTodayCommit = async() => {
-    const target_url = "https://github.com/clinoz"
+    const target_url = 'https://github.com/clinoz'
     const response = await axios.get(target_url,{
         responseType:"arraybuffer",
         headers:{
