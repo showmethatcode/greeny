@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const { IncomingWebhook } = require('@slack/webhook');
 const url = process.env.WebhookURL;
 const webhook = new IncomingWebhook(url);
+const schedule = require('node-schedule')
 
 
 
@@ -25,10 +26,12 @@ const getTodayCommit = async() => {
     const usernames = ['clinoz', 'incleaf', 'indante']
     const storedNames = []
     const counts = []
+    const target_urls = []
     for (var i=0; i<usernames.length; i++){
         username = usernames[i]
         storedNames.push(username)
         const target_url = `https://github.com/${username}`
+        target_urls.push(target_url)
         const response = await axios.get(target_url,{
             responseType:"arraybuffer",
             headers:{
@@ -48,23 +51,27 @@ const getTodayCommit = async() => {
         } 
     } return {
         counts: counts,
-        storedNames: storedNames
+        storedNames: storedNames,
+        target_urls: target_urls
     }
 }
 
 
 function createMessage(count){
     if (count>0){
-        return ('님이 오늘 잔디를 가꾸는데 성공하셨습니다!');
-    } else {
-        return ('님이 오늘 잔디를 가꾸는데 실패하셨습니다.')
+        return ('님이 잔디 심기에 성공하셨습니다! 🥳 점점 예쁜 정원이 되어가고 있네요 🌱');
+    } else if (count==0){
+        return ('님이 잔디 심기에 실패하셨습니다 😭 하지만 괜찮아요. 오늘부터 다시 시작해도 예쁜 정원을 가꿀 수 있으니까요 🤗')
     }
 }
 
-getTodayCommit().then(function(todayCommit){
+
+ getTodayCommit().then(function(todayCommit){
     for (var i=0; i<todayCommit.storedNames.length; i++){
         const name = todayCommit.storedNames[i]
-        const formatMessage = createMessage(todayCommit.counts[i])
+        const url = todayCommit.target_urls[i]
+        const formattedMessage = createMessage(todayCommit.counts[i])
+        
         const message = {
             "blocks": [
                 {
@@ -72,12 +79,32 @@ getTodayCommit().then(function(todayCommit){
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": `${name}${formatMessage}`
+                            "text": `*<${url}|${name}>${formattedMessage}*`
                         }
                     ]
                 }
             ]
         }
-        webhook.send(message)
+        schedule.scheduleJob('0 0 * * *',async()=>
+        await webhook.send(message)
+        )
+        if (todayCommit.counts[i]==0){
+            const message2 = {
+                "blocks": [
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": `*오늘 <${url}|${name}>님은 아직 정원을 가꾸지 못하셨어요. 시간이 얼마 남지 않았답니다 😭*`
+                            }
+                        ]
+                    }
+                ]
+            }
+            schedule.scheduleJob('00 22 * * *',async()=>
+        await webhook.send(message2)
+        )
+        }
     }
 })
