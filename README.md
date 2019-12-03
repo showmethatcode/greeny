@@ -7,4 +7,4 @@
 - successly complete to make 'Greeny' MVP
 
 ## 2019.12.3
-- greeny can be heard your message!
+- Greeny can be heard your message!
