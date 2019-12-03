@@ -5,9 +5,43 @@ const { IncomingWebhook } = require('@slack/webhook');
 const url = process.env.WebhookURL;
 const webhook = new IncomingWebhook(url);
 const schedule = require('node-schedule')
+const botkit = require('botkit')
+const Slack = require('slack-node')
+const token = process.env.TOKEN
+const controller = botkit.slackbot({
+	debug: false,
+	log: true
+});
+const bot = controller.spawn({
+	token: process.env.TOKEN
+    })
 
 
+const botScope = [
+    'direct_message',
+    'direct_mention',
+    'mention',
+    'ambient'
+]
+const userNames = ['well-balanced','indante','incleaf']
+const sendMessage = function(){
+    for (var i=0; i<userNames.length; i++) {
+        controller.hears(userNames[i],botScope, (bot,message)=>{
+            bot.reply(message,'ㅋㅋ')
+        })   
+    }
+}
+sendMessage()
 
+    
+bot.startRTM(function(){
+        bot.say({
+        text: 'Greeny works!',
+        channel: 'bots-playground'
+    })
+});
+
+/*
 Date.prototype.yyyymmdd = function() // prototype 말고 다른 함수로 고안해 만들어볼것
 {
     var yyyy = this.getFullYear().toString();
@@ -23,7 +57,7 @@ var today = new Date().yyyymmdd().toLocaleString('ko-KR', {
 
 
 const getTodayCommit = async() => {
-    const usernames = ['we-me', 'incleaf', 'indante']
+    const usernames = ['well-balanced', 'incleaf', 'indante']
     const storedNames = []
     const counts = []
     const target_urls = []
@@ -66,8 +100,9 @@ function createMessage(count){
 }
 
 
-schedule.scheduleJob('00 00 * * *',async()=>
-        await getTodayCommit().then(function(todayCommit){
+//schedule.scheduleJob('59 23 * * *',async()=>
+       // await 
+        getTodayCommit().then(function(todayCommit){
             for (var i=0; i<todayCommit.storedNames.length; i++){
                 const name = todayCommit.storedNames[i]
                 const url = todayCommit.target_urls[i]
@@ -88,30 +123,32 @@ schedule.scheduleJob('00 00 * * *',async()=>
                 webhook.send(message)
             }
         })
-)
+//)
 
-schedule.scheduleJob('00 22 * * *',async()=>
-    await getTodayCommit().then(function(todayCommit){
-            for (var i=0; i<todayCommit.storedNames.length; i++){
-                const name = todayCommit.storedNames[i]
-                const url = todayCommit.target_urls[i]
-                const formattedMessage = createMessage(todayCommit.counts[i])
-                if (todayCommit.counts[i]==0){
-                    const message2 = {
-                        "blocks": [
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": `*<${url}|${name}>님은 아직 정원을 가꾸지 못하셨어요. 시간이 얼마 남지 않았답니다 😭*`
-                                   }
-                                ]
-                          }
-                       ]
-                    }
-                    webhook.send(message2)
-              }
-         }
-    })
-)
+//schedule.scheduleJob('00 22 * * *',async()=>
+    //await 
+    // getTodayCommit().then(function(todayCommit){
+    //         for (var i=0; i<todayCommit.storedNames.length; i++){
+    //             const name = todayCommit.storedNames[i]
+    //             const url = todayCommit.target_urls[i]
+    //             const formattedMessage = createMessage(todayCommit.counts[i])
+    //             if (todayCommit.counts[i]==0){
+    //                 const message2 = {
+    //                     "blocks": [
+    //                         {
+    //                             "type": "context",
+    //                             "elements": [
+    //                                 {
+    //                                     "type": "mrkdwn",
+    //                                     "text": `*<${url}|${name}>님은 아직 정원을 가꾸지 못하셨어요. 시간이 얼마 남지 않았답니다 😭*`
+    //                                }
+    //                             ]
+    //                       }
+    //                    ]
+    //                 }
+    //                 webhook.send(message2)
+    //           }
+    //      }
+    // })
+//)
+*/
