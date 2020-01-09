@@ -54,7 +54,7 @@ const sendReply = (usernames) => {
 
 // excute function
 // Time Setting : ex) 00 00 00 * * 1-5 : every Mon ~ Fri
-// new cronJob('00 00 00 * * *',async()=>{
+new cronJob('00 00 00 * * *',async()=>{
     scrape.getCounts(users)
     .then(counts => {
     return scrape.formatFailMessages(counts,users)
@@ -62,7 +62,7 @@ const sendReply = (usernames) => {
     .then(messages => {
         sendMessages(messages)
     })
-// },null,true,"Asia/Seoul")
+},null,true,"Asia/Seoul")
 
 sendReply(users);
 

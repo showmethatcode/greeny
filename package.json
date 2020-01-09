@@ -8,11 +8,7 @@
     "botkit": "^0.6.21",
     "cheerio": "^1.0.0-rc.3",
     "cron": "^1.7.2",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "jquery": "^3.4.1",
-    "node-schedule-tz": "^1.2.1-4",
-    "slack-node": "^0.1.8"
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {},
   "scripts": {
