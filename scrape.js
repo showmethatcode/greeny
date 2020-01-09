@@ -37,9 +37,11 @@ exports.formatFailMessages = async(counts,users) => {
     var messages = [];
     for (var i = 0; i<counts.length; i++) {
         if (counts[i] == 0) {
-            message = users[i] + '님이 잔디 심기에 실패하셨습니다 😭 우리 조금만 더 힘내봐요 🤗';
+            message = users[i] + ' failed to plant glass today 😭';
+            // message = users[i] + '님이 잔디 심기에 실패하셨습니다 😭 우리 조금만 더 힘내봐요 🤗';
         } else {
-            message = users[i] + '님이 잔디 심기에 성공하셨습니다! 🥳 예쁜 정원이 만들어지는 중 🌱';
+            message = users[i] + ' successed to plant glass today 🥳 Beautiful GARDEN is being built 🌱';
+            // message = users[i] + '님이 잔디 심기에 성공하셨습니다! 🥳 예쁜 정원이 만들어지는 중 🌱';
         }
         messages.push(message)
     }
@@ -65,9 +67,11 @@ exports.getCount = async(username) => {
 
 exports.formatCheckMessage = async(count) => {
         if (count == 0) {
-            message = '아직 잔디를 심지 않으셨어요 😭 우리 조금만 더 힘내봐요 🤗';
+            message = ' have not planted glass today yet 😭 Go for it 🤗';
+            // message = '아직 잔디를 심지 않으셨어요 😭 우리 조금만 더 힘내봐요 🤗';
         } else {
-            message = '잔디를 심으셨군요 🥳 초록초록하게 더 심어주세요 🌱';
+            message = ' have already planted glass today 🥳 Plant more green 🌱';
+            // message = '잔디를 심으셨군요 🥳 초록초록하게 더 심어주세요 🌱';
         }
     return await message
 }
