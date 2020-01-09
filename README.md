@@ -1,6 +1,7 @@
 # Hello, Greeny
 Greeny helps you to create your own garden on GitHub 💚
-<img width="643" alt="스크린샷 2020-01-09 19 57 22" src="https://user-images.githubusercontent.com/48206623/72062009-4c455580-331a-11ea-848e-4ce67ffc490a.png">
+<img width="634" alt="스크린샷 2020-01-09 21 02 44" src="https://user-images.githubusercontent.com/48206623/72066249-6b94b080-3323-11ea-9368-1d6b680132a8.png">
+
 #### 2019.11.22
 - Green was born !
 - Greeny learned how to scrape your commit count :)
