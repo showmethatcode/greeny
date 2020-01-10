@@ -1,5 +1,6 @@
 # Hello, Greeny
 Greeny helps you to create your own garden on GitHub 💚
+
 <img width="634" alt="스크린샷 2020-01-09 21 02 44" src="https://user-images.githubusercontent.com/48206623/72066249-6b94b080-3323-11ea-9368-1d6b680132a8.png">
 
 ## Chnage log
