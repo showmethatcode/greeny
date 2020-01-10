@@ -24,7 +24,7 @@ Greeny helps you to create your own garden on GitHub 💚
 2. Copy API Token
 3. Add your `bot` in your Slack Channel
 
-## Useage
+## Usage
 
 ##### Install modules
 ```
