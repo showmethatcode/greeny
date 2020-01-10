@@ -31,9 +31,14 @@ Greeny helps you to create your own garden on GitHub 💚
 npm install
 ```
 
+```
+cd greeny
+```
+
 ##### Create environment variable file
 ```
 touch .env
+vim .env
 ```
 
 ##### Enter your Bot API Token in `.env`
