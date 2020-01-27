@@ -6,6 +6,7 @@ const controller = botkit.slackbot({
 	log: true
 });
 const bot = controller.spawn({
+    retry: true,
 	token: process.env.TOKEN
     });
 const scrape = require('./scrape');
@@ -66,7 +67,11 @@ new cronJob('00 00 00 * * *',async()=>{
 
 sendReply(users);
 
-bot.startRTM(function(){
+bot.startRTM(function(err){
+    if (err) {
+        console.log('Failed to start RTM');
+        return setTimeout(start)
+    }
     bot.say({
     text: 'Greeny works!',
     channel: 'bots-playground'
