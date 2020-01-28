@@ -39,7 +39,11 @@ exports.formatFailMessages = async(counts,users) => {
         if (counts[i] == 0) {
             message = users[i] + ' failed to plant grass today 😭';
         } else {
+<<<<<<< HEAD
             message = users[i] + ' succeeded to plant grass today 🥳 Beautiful GARDEN is being built 🌱';
+=======
+            message = users[i] + ' succeeded to plant glass today 🥳 Beautiful GARDEN is being built 🌱';
+>>>>>>> 2e6a90ae210e552b6bf22291f703a5c8db26cbee
         }
         messages.push(message)
     }

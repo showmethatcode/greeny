@@ -34,6 +34,7 @@ npm install
 ##### Create environment variable file
 ```
 touch .env
+vim .env
 ```
 
 ##### Enter your Bot API Token in `.env`
