@@ -15,14 +15,15 @@ const botScope = [
     'direct_message',
     'direct_mention',
     'mention',
-    'ambient'
+   // 'ambient'
 ];
 
 // Add User in this Array
 const users = [
     'well-balanced',
     'indante',
-    'incleaf'
+    'incleaf',
+    'tkdals5429',
 ];
 
 const sendMessages = async(messages) => {

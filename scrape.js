@@ -37,9 +37,9 @@ exports.formatFailMessages = async(counts,users) => {
     var messages = [];
     for (var i = 0; i<counts.length; i++) {
         if (counts[i] == 0) {
-            message = users[i] + ' failed to plant glass today 😭';
+            message = users[i] + ' failed to plant grass today 😭';
         } else {
-            message = users[i] + ' successed to plant glass today 🥳 Beautiful GARDEN is being built 🌱';
+            message = users[i] + ' succeeded to plant grass today 🥳 Beautiful GARDEN is being built 🌱';
         }
         messages.push(message)
     }
@@ -65,9 +65,9 @@ exports.getCount = async(username) => {
 
 exports.formatCheckMessage = async(count) => {
         if (count == 0) {
-            message = ' have not planted glass today yet 😭 Go for it 🤗';
+            message = ' has not planted grass today yet 😭 Go for it 🤗';
         } else {
-            message = ' have already planted glass today 🥳 Plant more green 🌱';
+            message = ' has already planted grass today 🥳 Plant more green 🌱';
         }
     return await message
 }
