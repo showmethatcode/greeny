@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { CronJob } = require('cron');
 const botkit = require('botkit');
+const scrape = require('./scrape');
 
 const controller = botkit.slackbot(
   {
@@ -8,11 +9,11 @@ const controller = botkit.slackbot(
     log: true,
   },
 );
+
 const bot = controller.spawn({
   retry: true,
   token: process.env.TOKEN,
 });
-const scrape = require('./scrape');
 
 // Set hearing option in this Array
 const botScope = [
@@ -30,20 +31,20 @@ const users = [
   'tkdals5429',
 ];
 
-const sendMessages = async (messages) => {
-  for (let i = 0; i < messages.length; i++) {
+const sendMessages = messages => {
+  messages.forEach(message => {
     bot.say({
-      text: messages[i],
-      channel: 'bots-playground',
-    });
-  }
+      text: message,
+      channel: 'bots-playground'
+    })
+  })
 };
 
-const sendReplyPersonal = (username) => {
+const sendReplyPersonal = username => {
   controller.hears(username, botScope, (botAPI, message) => {
     scrape.getCount(username)
-      .then((count) => scrape.formatCheckMessage(count))
-      .then((formattedMessage) => botAPI.reply(message, formattedMessage));
+    .then(count => scrape.formatCheckMessage(count))
+    .then(formattedMessage => botAPI.reply(message, formattedMessage));
   });
 };
 
