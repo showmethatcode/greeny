@@ -3,6 +3,12 @@ import { MESSAGES } from './variables.js'
 
 export let users = [];
 
+export const showUsers = (botAPI, message, users) => {
+    (users.length > 0)
+        ? botAPI.reply(message, MESSAGES.SUCCESS_SHOW_USERS.replace('{message}', users.join('\n')))
+        : botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
+}
+
 export const addUser = (botAPI, message, user) => {
     if (user) {
         users.push(user);

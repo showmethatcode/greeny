@@ -3,4 +3,9 @@ export const getNumberOfDay = (numberOfDay) => {
     return formattedNumberOfDay
 };
 
-export const mapCommandAndFunction = (command) => objMappedCommandAndFunction[command]
+export const getTimezoneCookie = (location) => {
+    const continent = location.split("/")[0]
+    const city = location.split("/")[1]
+    const timezoneCookie = `tz=${continent}%2F${city};`
+    return timezoneCookie
+}

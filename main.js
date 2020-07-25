@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 import cron from 'cron'
 import botkit from 'botkit'
-import { getCount, getCounts, formatMessage, formatFailMessages, getResponseAsync } from './scrape.js'
+import { checkCommit } from './scrape.js'
 import { COMMANDS, botScope, MESSAGES } from './variables.js'
-import { users, addUser, deleteUser } from './user.js'
+import { users, showUsers, addUser, deleteUser } from './user.js'
 
 dotenv.config()
 
@@ -36,11 +36,11 @@ const bot = controller.spawn({
 const executeCommand = (botAPI, message, command, target) => {
   switch(command) {
     case 'show users':
-      botAPI.reply(message, users.join('\n'))
+      showUsers(botAPI, message, users);
       break;
     
-    case 'show user':
-      showUser(botAPI, message, target)
+    case 'check commit':
+      checkCommit(botAPI, message, target);
       break;
 
     case 'add user':
@@ -61,7 +61,7 @@ bot.startRTM((err) => {
 
   bot.say({
     text: MESSAGES.INTRO,
-    channel: process.env.CHANNEL,
+    // channel: process.env.CHANNEL,
   })
 
   controller.hears(COMMANDS, botScope, (botAPI, message) => {
