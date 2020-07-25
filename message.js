@@ -1,32 +1,16 @@
-export const sendMessages = messages => {
-    messages.forEach(message => {
-      bot.say({
-        text: message,
-        // channel: 'bots-playground'
-      })
-    })
-  };
+import { MESSAGES } from './variables.js'
 
-export const sendReplies = usernames => {
-    usernames.forEach(user => sendReply(user));
-};
+export const formatMessage = (commitInfo) => {
+    const [ user, record, isCommitted ] = commitInfo
+    let message
 
-export const sendReply = username => {
-    controller.hears(username, botScope, (botAPI, message) => {
-        getCount(username)
-        .then(count => formatMessage(count, username))
-        .then(formattedMessage => botAPI.reply(message, formattedMessage));
-    });
-};
+    if (isCommitted) {
+        message = (record > 2) 
+        ? MESSAGES.SUCCESS_STRAIGHT_COMMIT.replace('{user}', user).replace('{number}', record)
+        : MESSAGES.SUCCESS_COMMIT.replace('{user}', user);
+    } else {
+        message = MESSAGES.FAILURE_COMMIT.replace('{user}', user);
+    }
 
-export const formatFailMessages = async (counts, users) => {
-    const messages = [];
-    let message;
-    users.forEach((user, i) => {
-      message = (counts[i] === 0) 
-      ? `${ user } failed to plant grass today 😭` 
-      : message = `${ user } succeeded to plant grass today 🥳 Beautiful GARDEN is being built 🌱`;
-      messages.push(message);
-    });
-    return messages
-  };
+    return message
+}

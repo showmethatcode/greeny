@@ -1,57 +1,20 @@
 import dotenv from 'dotenv'
-import cron from 'cron'
 import botkit from 'botkit'
-import { checkCommit } from './scrape.js'
+import cron from 'cron'
 import { COMMANDS, botScope, MESSAGES } from './variables.js'
-import { users, showUsers, addUser, deleteUser } from './user.js'
+import { users } from './user.js'
+import { getResponseAsync, getCommitRecord } from './scrape.js'
+import { executeCommand } from './routes.js'
+import { formatMessage } from './message.js'
 
 dotenv.config()
 
 const controller = botkit.slackbot();
 
-const bot = controller.spawn({
+export const bot = controller.spawn({
   retry: true,
   token: process.env.TOKEN,
 });
-
-// execute function
-// Time Setting : ex) 00 00 00 * * 1-5 : every Mon ~ Fri
-// eslint-disable-next-line no-new
-// new cron.CronJob('00 59 23 * * *', async () => {
-//   getCounts(users)
-//   .then(counts => formatFailMessages(counts, users))
-//   .then(messages => {
-//     sendMessages(messages);
-//   });
-// }, null, true, 'Asia/Seoul');
-
-// Promise.all(getResponseAsync(users))
-// .then(getCounts)
-// .then(messages => {
-//   sendMessages(messages)
-// });
-
-// sendReply(users);
-
-const executeCommand = (botAPI, message, command, target) => {
-  switch(command) {
-    case 'show users':
-      showUsers(botAPI, message, users);
-      break;
-    
-    case 'check commit':
-      checkCommit(botAPI, message, target);
-      break;
-
-    case 'add user':
-      addUser(botAPI, message, target);
-      break;
-
-    case 'delete user':
-      deleteUser(botAPI, message, target);
-      break;
-  }
-}
 
 
 bot.startRTM((err) => {
@@ -61,13 +24,28 @@ bot.startRTM((err) => {
 
   bot.say({
     text: MESSAGES.INTRO,
-    // channel: process.env.CHANNEL,
+    channel: process.env.CHANNEL
   })
+
+new cron.CronJob('00 59 23 * * *', async () => {
+  const promiseArr = users.map(getResponseAsync)
+  Promise.all(promiseArr)
+  .then(resArr => {
+      const messages = resArr
+      .map(getCommitRecord)
+      .map(formatMessage)
+
+      if (messages) {
+        messages.forEach(message => bot.say({text: message, channel: process.env.CHANNEL}));
+      }
+  });
+}, null, true, 'Asia/Seoul');
+  
 
   controller.hears(COMMANDS, botScope, (botAPI, message) => {
     const input = message.text
     const command = input.split(' ').slice(0, 2).join(' ')
-    const target = input.split(' ').length === 3 ? input.split(' ').pop() : false
+    const target = input.split(' ').length > 2 ? input.split(' ').pop() : false
     executeCommand(botAPI, message, command, target)
   })
 });

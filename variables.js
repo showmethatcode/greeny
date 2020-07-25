@@ -7,8 +7,8 @@ export const MESSAGES = {
     FAILURE_COMMIT: "`{user}` failed to plant grass today 😭",
     SUCCESS_STRAIGHT_COMMIT: "`{user}` has planted grasses {number} days in a row! 🎉",
 
-    SUCCESS_ADD_USER: "`{user}` is added into list 😆",
-    SUCCESS_DELETE_USER: "`{user}` is deleted in list 😆",
+    SUCCESS_ADD_USER: "`{user}` is in my heart 💚",
+    SUCCESS_DELETE_USER: "Goodbye `{user}` 😭",
     USER_IS_OMITTED: "Please enter the user 🙏\n\n 👉 `add user well-balanced`\n👉 `delete user well-balanced`\n👉 `check commit well-balanced`"
 }
 
@@ -17,6 +17,7 @@ export const COMMANDS = [
     "add user",
     "delete user",
     "check commit",
+    "help"
 ];
 
 // Set hearing option in this Array
