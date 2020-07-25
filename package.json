@@ -1,5 +1,6 @@
 {
   "name": "greeny",
+  "type": "module",
   "version": "1.0.0",
   "description": "- Green was born :green_heart: - Greeny learned how to scrape your commit count :)",
   "main": "scrape.js",
