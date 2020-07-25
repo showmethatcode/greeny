@@ -1,7 +1,7 @@
 
 import { MESSAGES } from './variables.js'
 
-export let users = ['well-balanced', 'indante'];
+export let users = [];
 
 export const showUsers = (botAPI, message, users) => {
     (users.length > 0)
