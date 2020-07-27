@@ -2,10 +2,10 @@ import dotenv from 'dotenv'
 import botkit from 'botkit'
 import cron from 'cron'
 import { COMMANDS, botScope, MESSAGES } from './variables.js'
-import { users } from './user.js'
-import { getResponseAsync, getCommitRecord } from './scrape.js'
-import { executeCommand } from './routes.js'
-import { formatMessage } from './message.js'
+import { users } from '../user.js'
+import { getResponseAsync, getCommitRecord } from '../scrape.js'
+import { executeCommand } from '../routes.js'
+import { formatMessage } from '../message.js'
 
 dotenv.config()
 

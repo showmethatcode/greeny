@@ -1,7 +1,7 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 import { getTimezoneCookie } from './utils.js'
-import { GitHubURL, MESSAGES } from './variables.js'
+import { GitHubURL } from './variables.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -25,21 +25,12 @@ export const getCommitRecord = (res) => {
   ]
 }
 
-export const checkCommit = (botAPI, message, user) => {
-  (user)
-  ? getResponseAsync(user)
-    .then(res => {
-      const [ user, record, isCommitted ] = getCommitRecord(res);
-      if (record > 2) {
-        botAPI.reply(message, MESSAGES.SUCCESS_STRAIGHT_COMMIT
-        .replace('{user}', user)
-        .replace('{number}', record))
-      } 
-      else if (isCommitted) botAPI.reply(message, MESSAGES.SUCCESS_COMMIT.replace('{user}', user))
-      else botAPI.reply(message, MESSAGES.FAILURE_COMMIT.replace('{user}', user))
-    })
-
-  : botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
+export const checkCommit = (user) => {
+  getResponseAsync(user)
+  .then(res => {
+    const [ user, record, isCommitted ] = getCommitRecord(res);
+    return user, record, isCommitted
+  });
 }
 
 export const getResponseAsync = user => {

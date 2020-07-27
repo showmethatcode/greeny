@@ -14,3 +14,22 @@ export const formatMessage = (commitInfo) => {
 
     return message
 }
+
+export const sendStraightCommitMessage = (botAPI, message, user, record) => {
+    botAPI.reply(message, MESSAGES.SUCCESS_STRAIGHT_COMMIT
+    .replace('{user}', user)
+    .replace('{number}', record));
+}
+
+export const sendCommitSuccessMessage = (botAPI, message, user) => 
+    botAPI.reply(message, MESSAGES.SUCCESS_COMMIT.replace('{user}', user))
+
+
+export const sendCommitFailureMessage = (botAPI, message, user) => 
+    botAPI.reply(message, MESSAGES.FAILURE_COMMIT.replace('{user}', user))
+
+export const sendInformingMessageOmittedUser = (botAPI, message) => 
+    botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
+
+export const sendHelpMessage = (botAPI, message) => 
+    botAPI.reply(message, MESSAGES.HELP)
