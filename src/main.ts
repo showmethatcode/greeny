@@ -1,11 +1,11 @@
 import dotenv from 'dotenv'
 import botkit from 'botkit'
 import cron from 'cron'
-import { COMMANDS, botScope, MESSAGES } from './variables.js'
-import { users } from '../user.js'
-import { getResponseAsync, getCommitRecord } from '../scrape.js'
-import { executeCommand } from '../routes.js'
-import { formatMessage } from '../message.js'
+import { COMMANDS, botScope } from './variables.js'
+import { users } from './user.js'
+import { getResponseAsync, getCommitRecord } from './scrape.js'
+import { executeCommand } from './routes.js'
+import { formatMessage } from './message.js'
 
 dotenv.config()
 
@@ -23,7 +23,7 @@ bot.startRTM((err) => {
   }
 
   bot.say({
-    text: MESSAGES.INTRO,
+    // text: MESSAGES.INTRO,
     channel: process.env.CHANNEL
   })
 
@@ -42,10 +42,10 @@ new cron.CronJob('00 59 23 * * *', async () => {
 }, null, true, 'Asia/Seoul');
   
 
-  controller.hears(COMMANDS, botScope, (botAPI, message) => {
-    const input = message.text
-    const command = input.split(' ').slice(0, 2).join(' ')
-    const target = input.split(' ').length > 2 ? input.split(' ').pop() : false
-    executeCommand(botAPI, message, command, target)
+controller.hears(COMMANDS, botScope, (botAPI, message) => {
+  const input = message.text
+  const command = input.split(' ').slice(0, 2).join(' ')
+  const target = input.split(' ').length > 2 ? input.split(' ').pop() : false
+  executeCommand(botAPI, message, command, target)
   })
 });

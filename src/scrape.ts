@@ -25,18 +25,12 @@ export const getCommitRecord = (res) => {
   ]
 }
 
-export const checkCommit = (user) => {
-  getResponseAsync(user)
-  .then(res => {
-    const [ user, record, isCommitted ] = getCommitRecord(res);
-    return user, record, isCommitted
-  });
-}
+export const checkCommit = (user) => getResponseAsync(user).then(getCommitRecord)
 
 export const getResponseAsync = user => {
-  const promise = new Promise((resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     const url = GitHubURL + user
-    let res = axios.get(url, {
+    const res = await axios.get(url, {
       withCredentials: true,
       headers: {
         Cookie: getTimezoneCookie(process.env.TIMEZONE),
@@ -44,6 +38,4 @@ export const getResponseAsync = user => {
     })
     resolve(res)
   });
-  
-  return promise;
 };
