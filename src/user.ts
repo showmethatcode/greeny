@@ -1,28 +1,43 @@
+import { messages } from './variables.js'
+import { SlackBot, Message } from 'botkit'
 
-import { MESSAGES } from './variables.js'
+export let users: string[]
 
-export let users = [];
-
-export const showUsers = (botAPI, message, users) => {
-    (users.length > 0)
-        ? botAPI.reply(message, MESSAGES.SUCCESS_SHOW_USERS.replace('{message}', users.join('\n')))
-        : botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
+export function showUsers(
+  botAPI: SlackBot,
+  message: Message,
+  users: string[],
+): void {
+  users.length > 0
+    ? botAPI.reply(
+        message,
+        messages.successShowUsers.replace('{message}', users.join('\n')),
+      )
+    : botAPI.reply(message, messages.userIsOmitted)
 }
 
-export const addUser = (botAPI, message, user) => {
-    if (user) {
-        users.push(user);
-        botAPI.reply(message, MESSAGES.SUCCESS_ADD_USER.replace('{user}', user))
-    } else {
-        botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
-    }
+export function addUser(
+  botAPI: SlackBot,
+  message: Message,
+  user: string,
+): void {
+  if (user) {
+    users.push(user)
+    botAPI.reply(message, messages.successAddUser.replace('{user}', user))
+  } else {
+    botAPI.reply(message, messages.userIsOmitted)
+  }
 }
 
-export const deleteUser = (botAPI, message, user) => {
-    if (user) {
-        users.splice(users.indexOf(user), 1);
-        botAPI.reply(message, MESSAGES.SUCCESS_DELETE_USER.replace('{user}', user))
-    } else {
-        botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
-    }
+export function deleteUser(
+  botAPI: SlackBot,
+  message: Message,
+  user: string,
+): void {
+  if (user) {
+    users.splice(users.indexOf(user), 1)
+    botAPI.reply(message, messages.successDeleteUser.replace('{user}', user))
+  } else {
+    botAPI.reply(message, messages.userIsOmitted)
+  }
 }

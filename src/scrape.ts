@@ -1,41 +1,46 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 import { getTimezoneCookie } from './utils.js'
-import { GitHubURL } from './variables.js'
+import { gitHubURL } from './variables.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-export const getCommitRecord = (res) => {
-  const $ = cheerio.load(res.data);
-  const user = $(`span.p-nickname.vcard-username.d-block`).text()
-  let record = 0
-  for (let i = 1; i < 54; i++) {
-    for (let j = 1; j < 8; j++) {
-      const count = $(`g:nth-child(${i}) > rect:nth-child(${j})`).attr('data-count');
-      if (count == undefined) break
-      else record = (count > 0) ? record + 1 : 0
-    }
-  }
-
-  return [
-    user,
-    record,
-    (record > 0) ? true : false
-  ]
+interface ScrapeResponse {
+  data: any
 }
 
-export const checkCommit = (user) => getResponseAsync(user).then(getCommitRecord)
+export async function checkCommit(user: string): Promise<any> {
+  const res = await getResponseAsync(user)
+  return getCommitRecord(res)
+}
 
-export const getResponseAsync = user => {
-  return new Promise(async(resolve, reject) => {
-    const url = GitHubURL + user
-    const res = await axios.get(url, {
+export function getResponseAsync(user: string): Promise<any> {
+  return new Promise(async (resolve, reject) => {
+    const url = gitHubURL + user
+    const response = await axios.get<ScrapeResponse>(url, {
       withCredentials: true,
       headers: {
         Cookie: getTimezoneCookie(process.env.TIMEZONE),
       },
     })
-    resolve(res)
-  });
-};
+    resolve(response)
+  })
+}
+
+export function getCommitRecord(res: ScrapeResponse): any[] {
+  const $: cheerio.Root = cheerio.load(res.data)
+  const user: string = $(`span.p-nickname.vcard-username.d-block`).text()
+  let record: number = 0
+  for (let i = 1; i < 54; i++) {
+    for (let j = 1; j < 8; j++) {
+      const count = $(`g:nth-child(${i}) > rect:nth-child(${j})`).attr(
+        'data-count',
+      )
+      if (count == undefined) break
+      else record = parseInt(count, 10) > 0 ? record + 1 : 0
+    }
+  }
+
+  return [user, record, record > 0 ? true : false]
+}

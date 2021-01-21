@@ -1,35 +1,43 @@
-import { MESSAGES } from './variables.js'
+import { messages } from './variables.js'
+import { SlackBot, Message } from 'botkit'
 
-export const formatMessage = (commitInfo) => {
-    const [ user, record, isCommitted ] = commitInfo
-    let message
-
-    if (isCommitted) {
-        message = (record > 2) 
-        ? MESSAGES.SUCCESS_STRAIGHT_COMMIT.replace('{user}', user).replace('{number}', record)
-        : MESSAGES.SUCCESS_COMMIT.replace('{user}', user);
-    } else {
-        message = MESSAGES.FAILURE_COMMIT.replace('{user}', user);
-    }
-
-    return message
+export function sendStraightCommitMessage(
+  bot: SlackBot,
+  event: Message,
+  user: string,
+  record: number,
+): void {
+  bot.reply(
+    event,
+    messages.successStraightCommit
+      .replace('{user}', user)
+      .replace('{number}', record.toString()),
+  )
 }
 
-export const sendStraightCommitMessage = (botAPI, message, user, record) => {
-    botAPI.reply(message, MESSAGES.SUCCESS_STRAIGHT_COMMIT
-    .replace('{user}', user)
-    .replace('{number}', record));
+export function sendCommitSuccessMessage(
+  bot: SlackBot,
+  event: Message,
+  user: string,
+): void {
+  bot.reply(event, messages.successCommit.replace('{user}', user))
 }
 
-export const sendCommitSuccessMessage = (botAPI, message, user) => 
-    botAPI.reply(message, MESSAGES.SUCCESS_COMMIT.replace('{user}', user))
+export function sendCommitFailureMessage(
+  bot: SlackBot,
+  event: Message,
+  user: string,
+): void {
+  bot.reply(event, messages.failureCommit.replace('{user}', user))
+}
 
+export function sendInformingMessageOmittedUser(
+  bot: SlackBot,
+  event: Message,
+): void {
+  bot.reply(event, messages.userIsOmitted)
+}
 
-export const sendCommitFailureMessage = (botAPI, message, user) => 
-    botAPI.reply(message, MESSAGES.FAILURE_COMMIT.replace('{user}', user))
-
-export const sendInformingMessageOmittedUser = (botAPI, message) => 
-    botAPI.reply(message, MESSAGES.USER_IS_OMITTED)
-
-export const sendHelpMessage = (botAPI, message) => 
-    botAPI.reply(message, MESSAGES.HELP)
+export function sendHelpMessage(bot: SlackBot, event: Message): void {
+  bot.reply(event, messages.help)
+}

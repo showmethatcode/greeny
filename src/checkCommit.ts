@@ -1,6 +1,6 @@
-import { getResponseAsync, getCommitRecord } from './scrape';
+import { getResponseAsync, getCommitRecord } from './scrape'
 
-export const checkCommit = async (user) => {
-  const res = await getResponseAsync(user);
-  return getCommitRecord(res);
-};
+export const checkCommit = async (user: string) => {
+  const res = await getResponseAsync(user)
+  return getCommitRecord(res)
+}
