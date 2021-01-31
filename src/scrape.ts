@@ -6,16 +6,16 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-interface ScrapeResponse {
+export interface ScrapeResponse {
   data: any
 }
 
-export async function checkCommit(user: string): Promise<any> {
+export async function checkCommit(user: string): Promise<any[]> {
   const res = await getResponseAsync(user)
   return getCommitRecord(res)
 }
 
-export function getResponseAsync(user: string): Promise<any> {
+export function getResponseAsync(user: string): Promise<ScrapeResponse> {
   return new Promise(async (resolve, reject) => {
     const url = gitHubURL + user
     const response = await axios.get<ScrapeResponse>(url, {
@@ -42,5 +42,9 @@ export function getCommitRecord(res: ScrapeResponse): any[] {
     }
   }
 
-  return [user, record, record > 0 ? true : false]
+  return [
+    user,
+    record,
+    record > 0 ? true : false
+  ]
 }

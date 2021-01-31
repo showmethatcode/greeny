@@ -2,9 +2,9 @@ import dotenv from 'dotenv'
 import botkit from 'botkit'
 import { Message, SlackController, SlackBot } from 'botkit'
 import cron from 'cron'
-import { commandOptions, botScope, messages } from './variables.js'
+import { commandOptions, botScope, messages, cronExpression } from './variables.js'
 import { users } from './user.js'
-import { getResponseAsync, getCommitRecord } from './scrape.js'
+import { getResponseAsync, getCommitRecord, ScrapeResponse } from './scrape.js'
 import { executeCommand } from './routes.js'
 import { sendInformingMessageOmittedUser } from './message.js'
 import { formatMessage } from './formatMessage'
@@ -17,7 +17,7 @@ const bot = controller.spawn({
   token: process.env.TOKEN,
 })
 
-bot.startRTM(function (err: any): void {
+bot.startRTM((err) => {
   if (err) {
     throw Error(err)
   }
@@ -28,14 +28,14 @@ bot.startRTM(function (err: any): void {
   })
 
   new cron.CronJob(
-    '00 59 23 * * *',
+    cronExpression,
     async () => {
-      const promiseArr: any[] = users.map(getResponseAsync)
-      Promise.all(promiseArr).then((resArr) => {
-        const messages = resArr.map(getCommitRecord).map(formatMessage)
+      const promiseArr: Promise<ScrapeResponse>[] = users.map(getResponseAsync)
+      Promise.all(promiseArr).then(resArr => {
+        const messages: string[] = resArr.map(getCommitRecord).map(formatMessage)
 
         if (messages) {
-          messages.forEach((message) =>
+          messages.forEach(message =>
             bot.say({ text: message, channel: process.env.CHANNEL }),
           )
         }
@@ -43,22 +43,21 @@ bot.startRTM(function (err: any): void {
     },
     null,
     true,
-    'Asia/Seoul',
+    process.env.TIMEZONE,
   )
 
   controller.hears(
     commandOptions,
     botScope,
     (bot: SlackBot, event: Message): void => {
-      const input = event.text
+      const input: string | undefined = event.text
 
       if (!input) {
         return
       }
 
       const command = input.split(' ').slice(0, 2).join(' ')
-      const target =
-        input.split(' ').length > 2 ? input?.split(' ').pop() : null
+      const target = input.split(' ').length > 2 ? input?.split(' ').pop() : null
 
       if (!target) {
         sendInformingMessageOmittedUser(bot, event)

@@ -45,3 +45,5 @@ export const botScope: string[] = [
 ]
 
 export const gitHubURL: string = 'https://github.com/'
+
+export const cronExpression: string = '00 59 23 * * * '
